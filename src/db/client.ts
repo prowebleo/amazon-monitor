@@ -1,4 +1,4 @@
-let _db: Awaited<ReturnType<typeof createClient>> | null = null
+let _db: any = null
 
 export async function getDb() {
   if (!_db) {
