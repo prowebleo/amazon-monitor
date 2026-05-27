@@ -35,7 +35,7 @@ export async function saveSnapshot(product: ProductSnapshot) {
 }
 
 export async function getHistory(asin: string): Promise<SnapshotRow[]> {
-  const db = getDb()
+  const db = await getDb()
   const result = await db.execute({
     sql: `SELECT * FROM snapshots WHERE asin = ? ORDER BY scraped_at ASC`,
     args: [asin],
@@ -44,7 +44,7 @@ export async function getHistory(asin: string): Promise<SnapshotRow[]> {
 }
 
 export async function getLatest(asin: string): Promise<SnapshotRow | null> {
-  const db = getDb()
+  const db = await getDb()
   const result = await db.execute({
     sql: `SELECT * FROM snapshots WHERE asin = ? ORDER BY scraped_at DESC LIMIT 1`,
     args: [asin],
@@ -54,7 +54,7 @@ export async function getLatest(asin: string): Promise<SnapshotRow | null> {
 }
 
 export async function getAllProducts(): Promise<SnapshotRow[]> {
-  const db = getDb()
+  const db = await getDb()
   const result = await db.execute(`
     SELECT * FROM snapshots WHERE id IN (
       SELECT MAX(id) FROM snapshots GROUP BY asin
