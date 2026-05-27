@@ -193,27 +193,22 @@ export default function Home() {
       </div>
 
       <div className="mt-8 rounded-xl border border-slate-700/60 bg-slate-800/50 p-5 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <h3 className="text-sm font-semibold text-slate-200">Price Comparison</h3>
-            <p className="text-xs text-slate-500">All products — price history overlay</p>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-slate-400">
-              {products.map((p, i) => (
-                <span key={p.asin} className="flex items-center gap-1">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: chartColors[i] }} />
-                  {p.title?.slice(0, 16)}...
-                </span>
-              ))}
-            </div>
-          </div>
+        <div className="mb-4">
+          <h3 className="text-sm font-semibold text-slate-200">Price History</h3>
+          <p className="text-xs text-slate-500">Individual timelines per product</p>
         </div>
-        <PriceChart
-          data={products.map((p) => p.priceHistory)}
-          productName="Comparison"
-          colors={chartColors}
-          productNames={products.map((p) => p.title?.slice(0, 20) ?? `Product`)}
-        />
+        <div className="grid gap-4 sm:grid-cols-3">
+          {products.map((p, i) => (
+            <PriceChart
+              key={p.asin}
+              data={[p.priceHistory]}
+              productName={p.title ?? p.asin}
+              colors={[chartColors[i]]}
+              single
+            />
+          ))}
+        </div>
+      </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard

@@ -126,14 +126,26 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             width={60}
           />
           <Tooltip
-            formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Price"]}
-            contentStyle={{
-              borderRadius: "10px",
-              border: "1px solid #334155",
-              fontSize: "13px",
-              background: "#1e293b",
-              color: "#e2e8f0",
-              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)",
+            content={({ active, payload, label }) => {
+              if (!active || !payload || payload.length === 0) return null
+              return (
+                <div style={{
+                  borderRadius: "10px",
+                  border: "1px solid #334155",
+                  fontSize: "13px",
+                  padding: "8px 12px",
+                  background: "#1e293b",
+                  color: "#e2e8f0",
+                  boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)",
+                }}>
+                  <p style={{ margin: "0 0 6px", fontSize: "11px", color: "#94a3b8" }}>{label}</p>
+                  {payload.map((entry, idx) => (
+                    <p key={idx} style={{ margin: "2px 0", color: entry.color }}>
+                      {entry.name}: ${Number(entry.value).toFixed(2)}
+                    </p>
+                  ))}
+                </div>
+              )
             }}
           />
           {isOverlay && <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "4px", color: "#94a3b8" }} />}
