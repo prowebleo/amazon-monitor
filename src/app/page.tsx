@@ -214,7 +214,6 @@ export default function Home() {
           colors={chartColors}
           productNames={products.map((p) => p.title?.slice(0, 20) ?? `Product`)}
         />
-      </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard
