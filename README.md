@@ -1,43 +1,24 @@
 # Amazon Price Monitor
 
-Automated price tracking dashboard for graphics cards — scrapes Amazon prices daily and visualizes historical trends.
+Tracks GPU prices from Amazon and visualizes historical trends. Three cards side by side with price history, a comparison overlay chart, and a stats table. Runs daily via GitHub Actions.
 
-![Dashboard Screenshot](https://github.com/prowebleo/amazon-monitor/raw/main/screenshot.png)
+## Why
 
-## Features
-
-- **Multi-product comparison** — Side-by-side price history overlay chart
-- **Historical tracking** — Price snapshots stored in Turso (SQLite edge DB)
-- **Smart badges** — Auto-tags Best Price, Top Rated, Most Reviews per scan
-- **CSV export** — Download price data as CSV with one click
-- **Scheduled scraping** — GitHub Action runs daily at 6 AM UTC
+Wanted a quick way to spot price drops on specific GPUs without refreshing Amazon pages. The scraper runs at 6 AM UTC, stores snapshots in Turso, and the dashboard updates automatically.
 
 ## Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | Next.js 15 (App Router) |
-| Database | Turso (libSQL) |
-| Charts | Recharts |
-| Scraping | Automated web scraping pipeline |
-| Scheduling | GitHub Actions |
-| Deployment | Vercel |
+Next.js 15, Turso (libSQL), Recharts, GitHub Actions, Vercel
 
-## Live Demo
+## Live
 
 **[amazon-monitor-eosin.vercel.app](https://amazon-monitor-eosin.vercel.app)**
 
-## Local Development
+## Running locally
 
 ```bash
 npm install
-cp .env.example .env
-# fill in your API keys
+# copy .env.example to .env.local and fill in your keys
 npm run dev
-```
-
-## Run Scraper
-
-```bash
-npm run scrape
+npm run scrape  # fetches fresh data
 ```

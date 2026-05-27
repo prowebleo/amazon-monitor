@@ -24,6 +24,7 @@ async function main() {
     process.exit(1)
   }
 
+  // TODO: add retry logic for rate-limited ASINs
   console.log(`Tracking ${asins.length} product(s)...\n`)
 
   for (const asin of asins) {
@@ -35,6 +36,7 @@ async function main() {
     } catch (error) {
       const msg = error instanceof Error ? error.message : "Unknown error"
       console.error(`  ✗ ${asin}: ${msg}`)
+      // don't stop — other ASINs may still work
     }
   }
 
