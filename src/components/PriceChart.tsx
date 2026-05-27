@@ -88,7 +88,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               stroke={colors[0]}
               strokeWidth={1.5}
               fill={`url(#gradSingle)`}
-              dot={chartData.length <= 2 ? { r: 3, fill: colors[0], stroke: "#0f172a", strokeWidth: 1.5 } : false}
+              dot={false}
               activeDot={{ r: 3 }}
             />
           </AreaChart>
@@ -145,7 +145,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               stroke={colors[i % colors.length]}
               strokeWidth={2}
               fill={`url(#grad${i})`}
-              dot={chartData.length <= 2 ? { r: 3, fill: colors[i % colors.length], stroke: "#0f172a", strokeWidth: 1.5 } : false}
+              dot={false}
               activeDot={{ r: 4, stroke: "#0f172a", strokeWidth: 2 }}
               name={isOverlay ? (productNames?.[i] ?? `Product ${i + 1}`) : "Price"}
             />
