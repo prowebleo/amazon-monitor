@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
+  Brush,
 } from "recharts"
 
 type Props = {
@@ -17,9 +18,10 @@ type Props = {
   colors?: string[]
   single?: boolean
   productNames?: string[]
+  yDomain?: [number | null, number | null]
 }
 
-export default function PriceChart({ data, productName, colors = ["#3b82f6"], single, productNames }: Props) {
+export default function PriceChart({ data, productName, colors = ["#3b82f6"], single, productNames, yDomain }: Props) {
   const isOverlay = Array.isArray(data[0])
   const series = isOverlay ? (data as { date: string; price: number | null }[][]) : [data as { date: string; price: number | null }[]]
 
@@ -51,9 +53,11 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
   }
 
   const allPrices = series.flatMap((s) => s.map((d) => d.price).filter((p): p is number => p !== null))
-  const min = Math.min(...allPrices)
-  const max = Math.max(...allPrices)
-  const padding = (max - min) * 0.1 || 5
+  const autoMin = Math.min(...allPrices)
+  const autoMax = Math.max(...allPrices)
+  const padding = (autoMax - autoMin) * 0.1 || 5
+  const domainMin = (yDomain?.[0] !== undefined ? (yDomain[0] !== null ? yDomain[0] : autoMin) : autoMin) - padding
+  const domainMax = (yDomain?.[1] !== undefined ? (yDomain[1] !== null ? yDomain[1] : autoMax) : autoMax) + padding
 
   if (single) {
     return (
@@ -116,7 +120,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
           <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
           <YAxis
-            domain={[min - padding, max + padding]}
+            domain={[domainMin, domainMax]}
             tick={{ fontSize: 11, fill: "#64748b" }}
             axisLine={false}
             tickLine={false}
@@ -134,6 +138,15 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             }}
           />
           {isOverlay && <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "4px", color: "#94a3b8" }} />}
+          {isOverlay && (
+            <Brush
+              dataKey="label"
+              height={28}
+              stroke="#3b82f6"
+              fill="#1e293b"
+              travellerWidth={10}
+            />
+          )}
           {series.map((_, i) => (
             <Area
               key={i}
