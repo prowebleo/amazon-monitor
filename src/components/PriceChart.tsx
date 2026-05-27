@@ -16,9 +16,10 @@ type Props = {
   productName: string
   colors?: string[]
   single?: boolean
+  productNames?: string[]
 }
 
-export default function PriceChart({ data, productName, colors = ["#3b82f6"], single }: Props) {
+export default function PriceChart({ data, productName, colors = ["#3b82f6"], single, productNames }: Props) {
   const isOverlay = Array.isArray(data[0])
   const series = isOverlay ? (data as { date: string; price: number | null }[][]) : [data as { date: string; price: number | null }[]]
 
@@ -143,7 +144,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               fill={`url(#grad${i})`}
               dot={false}
               activeDot={{ r: 4, stroke: "#0f172a", strokeWidth: 2 }}
-              name={isOverlay ? `Product ${i + 1}` : "Price"}
+              name={isOverlay ? (productNames?.[i] ?? `Product ${i + 1}`) : "Price"}
             />
           ))}
         </AreaChart>

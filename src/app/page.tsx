@@ -147,9 +147,12 @@ export default function Home() {
               )}
               <div className="mt-1 flex items-start justify-between">
                 <div className="min-w-0 flex-1">
-                  <h4 className="text-sm font-semibold text-slate-200 leading-snug line-clamp-2">
-                    {p.title ?? "Unknown"}
-                  </h4>
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300">{i + 1}</span>
+                    <h4 className="text-sm font-semibold text-slate-200 leading-snug line-clamp-2">
+                      {p.title ?? "Unknown"}
+                    </h4>
+                  </div>
                   <p className="mt-0.5 text-xs text-slate-500 font-mono">{p.brand} · {p.asin}</p>
                 </div>
               </div>
@@ -204,7 +207,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-        <PriceChart data={products.map((p) => p.priceHistory)} productName="Comparison" colors={chartColors} />
+        <PriceChart data={products.map((p) => p.priceHistory)} productName="Comparison" colors={chartColors} productNames={products.map((p) => p.title?.slice(0, 20) ?? `Product`)} />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
