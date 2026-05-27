@@ -1,7 +1,7 @@
 import { getDb } from "./client"
 
 export async function initDb() {
-  const db = getDb()
+  const db = await getDb()
   await db.execute(`
     CREATE TABLE IF NOT EXISTS snapshots (
       id INTEGER PRIMARY KEY AUTOINCREMENT,

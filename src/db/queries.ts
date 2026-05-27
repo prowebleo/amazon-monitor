@@ -16,7 +16,7 @@ type SnapshotRow = {
 }
 
 export async function saveSnapshot(product: ProductSnapshot) {
-  const db = getDb()
+  const db = await getDb()
   await db.execute({
     sql: `INSERT INTO snapshots (asin, title, price, original_price, stock, brand, rating, reviews_count, currency)
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
