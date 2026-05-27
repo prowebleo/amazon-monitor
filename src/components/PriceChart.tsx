@@ -72,9 +72,9 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               </linearGradient>
             </defs>
             <XAxis dataKey="label" hide />
-            <YAxis hide domain={[min - padding, max + padding]} />
+            <YAxis hide domain={[Math.round((autoMin - padding) * 100) / 100, Math.round((autoMax + padding) * 100) / 100]} />
             <Tooltip
-              formatter={(value: any) => [`$${value}`, "Price"]}
+              formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Price"]}
               contentStyle={{
                 borderRadius: "8px",
                 border: "1px solid #334155",
@@ -120,14 +120,15 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
           <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
           <YAxis
-            domain={[domainMin, domainMax]}
+            domain={[Math.round(domainMin * 100) / 100, Math.round(domainMax * 100) / 100]}
             tick={{ fontSize: 11, fill: "#64748b" }}
             axisLine={false}
             tickLine={false}
-            tickFormatter={(v) => `$${v}`}
-            width={50}
+            tickFormatter={(v) => `$${Number(v).toFixed(2)}`}
+            width={60}
           />
           <Tooltip
+            formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Price"]}
             contentStyle={{
               borderRadius: "10px",
               border: "1px solid #334155",
