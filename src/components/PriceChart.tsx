@@ -50,7 +50,7 @@ export default function PriceChart({ data, productName }: Props) {
             tickFormatter={(v) => `$${v}`}
           />
           <Tooltip
-            formatter={(value: number) => [`$${value}`, "Precio"]}
+            formatter={(value: any) => [`$${value}`, "Price"]}
             contentStyle={{
               borderRadius: "8px",
               border: "1px solid #e5e7eb",
