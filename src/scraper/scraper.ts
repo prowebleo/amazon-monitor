@@ -1,6 +1,8 @@
 import type { ProductSnapshot, ScraperResponse, RawProduct } from "./types"
 
-const API_URL = process.env.SCRAPER_API_URL ?? ""
+function getApiUrl(): string {
+  return process.env.SCRAPER_API_URL ?? ""
+}
 
 function getAuth(): string {
   const token = process.env.SCRAPER_API_TOKEN
@@ -48,7 +50,7 @@ export async function scrapeProduct(
   asin: string,
   domain = "com"
 ): Promise<ProductSnapshot> {
-  const response = await fetch(API_URL, {
+  const response = await fetch(getApiUrl(), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
