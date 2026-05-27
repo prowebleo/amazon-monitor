@@ -245,7 +245,7 @@ export default function Home() {
       <div className="mt-6">
         <div className="mb-2 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-slate-200">Comparison Table</h3>
-          <span className="text-xs text-slate-500">{products.length} product{products.length !== 1 ? "s" : ""}</span>
+          <span className="text-xs text-slate-500">{products.length} product{products.length !== 1 ? "s" : ""} · {products.map(p => p.title?.slice(0, 12)).join(", ")}</span>
         </div>
         <div className="overflow-hidden rounded-xl border border-slate-700/60 shadow-sm">
         <table className="w-full text-sm">
