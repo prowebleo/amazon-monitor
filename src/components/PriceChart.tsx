@@ -126,8 +126,18 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             width={60}
           />
           <Tooltip
-            content={({ active, payload, label }) => {
-              if (!active || !payload || payload.length === 0) return null
+            content={({ active, payload, label, coordinate }) => {
+              if (!active || !payload || !chartData.length) return null
+              const hoverIdx = chartData.findIndex(d => d.label === label)
+              const nearest = (si: number) => {
+                for (let off = 0; off < chartData.length; off++) {
+                  const fwd = chartData[hoverIdx + off]
+                  if (fwd?.[`price${si}`] != null) return { label: fwd.label, price: fwd[`price${si}`] }
+                  const bwd = chartData[hoverIdx - off]
+                  if (bwd?.[`price${si}`] != null) return { label: bwd.label, price: bwd[`price${si}`] }
+                }
+                return null
+              }
               return (
                 <div style={{
                   borderRadius: "10px",
@@ -139,11 +149,17 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
                   boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.3)",
                 }}>
                   <p style={{ margin: "0 0 6px", fontSize: "11px", color: "#94a3b8" }}>{label}</p>
-                  {payload.map((entry, idx) => (
-                    <p key={idx} style={{ margin: "2px 0", color: entry.color }}>
-                      {entry.name}: ${Number(entry.value).toFixed(2)}
-                    </p>
-                  ))}
+                  {series.map((_, i) => {
+                    const n = nearest(i)
+                    if (!n) return null
+                    const col = colors[i % colors.length]
+                    const name = productNames?.[i] ?? `Product ${i + 1}`
+                    return (
+                      <p key={i} style={{ margin: "2px 0", color: col }}>
+                        {name}: ${Number(n.price).toFixed(2)}
+                      </p>
+                    )
+                  })}
                 </div>
               )
             }}
@@ -157,6 +173,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               stroke={colors[i % colors.length]}
               strokeWidth={2}
               fill={`url(#grad${i})`}
+              connectNulls
               dot={{ r: 3, fill: colors[i % colors.length], stroke: "#0f172a", strokeWidth: 1 }}
               activeDot={{ r: 5, stroke: "#0f172a", strokeWidth: 2 }}
               name={isOverlay ? (productNames?.[i] ?? `Product ${i + 1}`) : "Price"}

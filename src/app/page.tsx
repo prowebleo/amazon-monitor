@@ -193,21 +193,16 @@ export default function Home() {
       </div>
 
       <div className="mt-8 rounded-xl border border-slate-700/60 bg-slate-800/50 p-5 shadow-sm">
-        <div className="mb-4">
+        <div className="mb-4 flex items-center gap-3">
           <h3 className="text-sm font-semibold text-slate-200">Price History</h3>
-          <p className="text-xs text-slate-500">Individual timelines per product</p>
+          <span className="text-xs text-slate-500">All products overlayed</span>
         </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          {products.map((p, i) => (
-            <PriceChart
-              key={p.asin}
-              data={[p.priceHistory]}
-              productName={p.title ?? p.asin}
-              colors={[chartColors[i]]}
-              single
-            />
-          ))}
-        </div>
+        <PriceChart
+          data={products.map((p) => p.priceHistory)}
+          productName="Comparison"
+          colors={chartColors}
+          productNames={products.map((p) => p.title?.slice(0, 20) ?? `Product`)}
+        />
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
