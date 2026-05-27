@@ -67,7 +67,6 @@ export default function Home() {
   const mostReviews = products.filter((p) => p.reviews !== null).sort((a, b) => (b.reviews ?? 0) - (a.reviews ?? 0))[0] ?? null
 
   const chartColors = ["#3b82f6", "#10b981", "#8b5cf6"]
-  const [priceRange, setPriceRange] = useState<[number | null, number | null]>([null, null])
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -199,34 +198,7 @@ export default function Home() {
             <h3 className="text-sm font-semibold text-slate-200">Price Comparison</h3>
             <p className="text-xs text-slate-500">All products — price history overlay</p>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span>Price range:</span>
-              <input
-                type="number"
-                placeholder="Min"
-                value={priceRange[0] ?? ""}
-                onChange={(e) => setPriceRange([e.target.value ? Number(e.target.value) : null, priceRange[1]])}
-                className="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
-              <span className="text-slate-600">—</span>
-              <input
-                type="number"
-                placeholder="Max"
-                value={priceRange[1] ?? ""}
-                onChange={(e) => setPriceRange([priceRange[0], e.target.value ? Number(e.target.value) : null])}
-                className="w-20 rounded border border-slate-700 bg-slate-800 px-2 py-1 text-xs text-slate-200 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              />
-              {(priceRange[0] !== null || priceRange[1] !== null) && (
-                <button
-                  onClick={() => setPriceRange([null, null])}
-                  className="text-slate-500 hover:text-slate-300"
-                >
-                  Reset
-                </button>
-              )}
-            </div>
-            <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-4 text-xs text-slate-400">
               {products.map((p, i) => (
                 <span key={p.asin} className="flex items-center gap-1">
                   <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: chartColors[i] }} />
@@ -241,7 +213,6 @@ export default function Home() {
           productName="Comparison"
           colors={chartColors}
           productNames={products.map((p) => p.title?.slice(0, 20) ?? `Product`)}
-          yDomain={priceRange[0] !== null || priceRange[1] !== null ? priceRange : undefined}
         />
       </div>
 

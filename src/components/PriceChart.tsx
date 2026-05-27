@@ -9,7 +9,6 @@ import {
   ResponsiveContainer,
   CartesianGrid,
   Legend,
-  Brush,
 } from "recharts"
 
 type Props = {
@@ -18,10 +17,9 @@ type Props = {
   colors?: string[]
   single?: boolean
   productNames?: string[]
-  yDomain?: [number | null, number | null]
 }
 
-export default function PriceChart({ data, productName, colors = ["#3b82f6"], single, productNames, yDomain }: Props) {
+export default function PriceChart({ data, productName, colors = ["#3b82f6"], single, productNames }: Props) {
   const isOverlay = Array.isArray(data[0])
   const series = isOverlay ? (data as { date: string; price: number | null }[][]) : [data as { date: string; price: number | null }[]]
 
@@ -56,8 +54,8 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
   const autoMin = Math.min(...allPrices)
   const autoMax = Math.max(...allPrices)
   const padding = (autoMax - autoMin) * 0.1 || 5
-  const domainMin = (yDomain?.[0] !== undefined ? (yDomain[0] !== null ? yDomain[0] : autoMin) : autoMin) - padding
-  const domainMax = (yDomain?.[1] !== undefined ? (yDomain[1] !== null ? yDomain[1] : autoMax) : autoMax) + padding
+  const domainLow = autoMin - padding
+  const domainHigh = autoMax + padding
 
   if (single) {
     return (
@@ -72,7 +70,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               </linearGradient>
             </defs>
             <XAxis dataKey="label" hide />
-            <YAxis hide domain={[Math.round((autoMin - padding) * 100) / 100, Math.round((autoMax + padding) * 100) / 100]} />
+            <YAxis hide domain={[domainLow, domainHigh]} />
             <Tooltip
               formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Price"]}
               contentStyle={{
@@ -120,7 +118,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
           <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
           <YAxis
-            domain={[Math.round(domainMin * 100) / 100, Math.round(domainMax * 100) / 100]}
+            domain={[domainLow, domainHigh]}
             tick={{ fontSize: 11, fill: "#64748b" }}
             axisLine={false}
             tickLine={false}
@@ -139,15 +137,6 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             }}
           />
           {isOverlay && <Legend wrapperStyle={{ fontSize: "11px", paddingTop: "4px", color: "#94a3b8" }} />}
-          {isOverlay && (
-            <Brush
-              dataKey="label"
-              height={28}
-              stroke="#3b82f6"
-              fill="#1e293b"
-              travellerWidth={10}
-            />
-          )}
           {series.map((_, i) => (
             <Area
               key={i}
