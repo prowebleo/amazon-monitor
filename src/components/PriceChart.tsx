@@ -72,7 +72,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             <XAxis dataKey="label" hide />
             <YAxis hide domain={[domainLow, domainHigh]} />
             <Tooltip
-              formatter={(value: any) => [`$${Number(value).toFixed(2)}`, "Price"]}
+            formatter={(value: any, name: any) => [`$${Number(value).toFixed(2)}`, name]}
               contentStyle={{
                 borderRadius: "8px",
                 border: "1px solid #334155",
@@ -145,8 +145,8 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
               stroke={colors[i % colors.length]}
               strokeWidth={2}
               fill={`url(#grad${i})`}
-              dot={false}
-              activeDot={{ r: 4, stroke: "#0f172a", strokeWidth: 2 }}
+              dot={{ r: 3, fill: colors[i % colors.length], stroke: "#0f172a", strokeWidth: 1 }}
+              activeDot={{ r: 5, stroke: "#0f172a", strokeWidth: 2 }}
               name={isOverlay ? (productNames?.[i] ?? `Product ${i + 1}`) : "Price"}
             />
           ))}
