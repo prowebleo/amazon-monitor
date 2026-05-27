@@ -248,38 +248,41 @@ export default function Home() {
           <span className="text-xs text-slate-500">{products.length} product{products.length !== 1 ? "s" : ""}</span>
         </div>
         <div className="overflow-hidden rounded-xl border border-slate-700/60 shadow-sm">
-          <div className="w-full text-sm">
-            <div className="flex border-b border-slate-700/60 bg-slate-800/80">
-              <div className="w-8 shrink-0 px-2 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">#</div>
-              <div className="flex-1 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Product</div>
-              <div className="w-20 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Price</div>
-              <div className="w-20 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Lowest</div>
-              <div className="w-16 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Avg</div>
-              <div className="w-20 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Change</div>
-              <div className="w-16 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Rating</div>
-              <div className="w-20 shrink-0 px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Reviews</div>
-            </div>
-            {products.map((p, i) => (
-              <div key={p.asin} className="flex border-b border-slate-800 hover:bg-slate-800/40 transition-colors">
-                <div className="flex w-8 shrink-0 items-center justify-center px-2 py-3">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300">{i + 1}</span>
-                </div>
-                <div className="flex flex-1 items-center px-4 py-3">
-                  <span className="mr-2 h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: chartColors[i] }} />
-                  <span className="font-medium text-slate-200 truncate">{p.title ?? p.asin}</span>
-                </div>
-                <div className="flex w-20 shrink-0 items-center justify-end px-4 py-3 font-semibold text-slate-100">${p.price}</div>
-                <div className="flex w-20 shrink-0 items-center justify-end px-4 py-3 text-slate-400">${p.stats.lowest ?? "—"}</div>
-                <div className="flex w-16 shrink-0 items-center justify-end px-4 py-3 text-slate-400">${p.stats.avg?.toFixed(0) ?? "—"}</div>
-                <div className={`flex w-20 shrink-0 items-center justify-end px-4 py-3 font-medium ${(p.stats.change ?? 0) < 0 ? "text-emerald-400" : (p.stats.change ?? 0) > 0 ? "text-red-400" : "text-slate-500"}`}>
-                  {p.stats.change !== null ? `${p.stats.change > 0 ? "+" : ""}${p.stats.change}%` : "—"}
-                </div>
-                <div className="flex w-16 shrink-0 items-center justify-end px-4 py-3 text-slate-400">{p.rating ?? "—"}</div>
-                <div className="flex w-20 shrink-0 items-center justify-end px-4 py-3 text-slate-400">{p.reviews?.toLocaleString() ?? "—"}</div>
-              </div>
-            ))}
-          </div>
-      </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-700/60 bg-slate-800/80">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">#</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Product</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Price</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Lowest</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Avg</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Change</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Rating</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Reviews</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800">
+              {products.map((p, i) => (
+                <tr key={p.asin} className="hover:bg-slate-800/40 transition-colors">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
+                      <span className="font-medium text-slate-200 line-clamp-1">{p.title ?? p.asin}</span>
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-right font-semibold text-slate-100">${p.price}</td>
+                  <td className="px-4 py-3 text-right text-slate-400">${p.stats.lowest ?? "—"}</td>
+                  <td className="px-4 py-3 text-right text-slate-400">${p.stats.avg?.toFixed(0) ?? "—"}</td>
+                  <td className={`px-4 py-3 text-right font-medium ${(p.stats.change ?? 0) < 0 ? "text-emerald-400" : (p.stats.change ?? 0) > 0 ? "text-red-400" : "text-slate-500"}`}>
+                    {p.stats.change !== null ? `${p.stats.change > 0 ? "+" : ""}${p.stats.change}%` : "—"}
+                  </td>
+                  <td className="px-4 py-3 text-right text-slate-400">{p.rating ?? "—"}</td>
+                  <td className="px-4 py-3 text-right text-slate-400">{p.reviews?.toLocaleString() ?? "—"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <footer className="mt-12 border-t border-slate-800 pt-6 text-center text-xs text-slate-600">
