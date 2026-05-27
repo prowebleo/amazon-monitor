@@ -265,10 +265,10 @@ export default function Home() {
               {products.map((p, i) => (
                 <tr key={p.asin} className="hover:bg-slate-800/40 transition-colors">
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
-                      <span className="font-medium text-slate-200 line-clamp-1">{p.title ?? p.asin}</span>
-                    </div>
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
+                  </td>
+                  <td className="px-4 py-3">
+                    <span className="font-medium text-slate-200 line-clamp-1">{p.title ?? p.asin}</span>
                   </td>
                   <td className="px-4 py-3 text-right font-semibold text-slate-100">${p.price}</td>
                   <td className="px-4 py-3 text-right text-slate-400">${p.stats.lowest ?? "—"}</td>
