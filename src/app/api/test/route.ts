@@ -1,4 +1,4 @@
-import { scrapeProduct } from "@/scraper/decodo"
+import { scrapeProduct } from "@/scraper/scraper"
 import { initDb } from "@/db/schema"
 import { saveSnapshot, getHistory } from "@/db/queries"
 

@@ -1,10 +1,10 @@
-import type { ProductSnapshot, DecodoResponse, DecodoRawProduct } from "./types"
+import type { ProductSnapshot, ScraperResponse, RawProduct } from "./types"
 
-const API_URL = "https://scraper-api.decodo.com/v2/scrape"
+const API_URL = process.env.SCRAPER_API_URL ?? ""
 
 function getAuth(): string {
-  const token = process.env.DECODO_API_TOKEN
-  if (!token) throw new Error("Falta DECODO_API_TOKEN en .env.local")
+  const token = process.env.SCRAPER_API_TOKEN
+  if (!token) throw new Error("Falta SCRAPER_API_TOKEN en .env.local")
   return `Basic ${token}`
 }
 
@@ -21,7 +21,7 @@ function toInteger(value: unknown): number | null {
   return n !== null ? Math.round(n) : null
 }
 
-function extractProduct(raw: DecodoRawProduct, asin: string): ProductSnapshot {
+function extractProduct(raw: RawProduct, asin: string): ProductSnapshot {
   return {
     asin: raw.asin ?? asin,
     title: raw.title ?? raw.product_name ?? null,
@@ -37,11 +37,11 @@ function extractProduct(raw: DecodoRawProduct, asin: string): ProductSnapshot {
   }
 }
 
-function unwrapResponse(data: DecodoResponse): DecodoRawProduct {
+function unwrapResponse(data: ScraperResponse): RawProduct {
   if (Array.isArray(data.results)) {
     return data.results[0]?.content?.results ?? {}
   }
-  return (data.results as DecodoRawProduct) ?? {}
+  return (data.results as RawProduct) ?? {}
 }
 
 export async function scrapeProduct(
@@ -64,11 +64,11 @@ export async function scrapeProduct(
 
   if (!response.ok) {
     throw new Error(
-      `Decodo error ${response.status}: ${await response.text()}`
+      `Scraper error ${response.status}: ${await response.text()}`
     )
   }
 
-  const data: DecodoResponse = await response.json()
+  const data: ScraperResponse = await response.json()
   const raw = unwrapResponse(data)
   return extractProduct(raw, asin)
 }

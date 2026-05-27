@@ -12,7 +12,7 @@ export type ProductSnapshot = {
   currency: string | null
 }
 
-export type DecodoRawProduct = {
+export type RawProduct = {
   asin?: string
   title?: string
   product_name?: string
@@ -28,12 +28,12 @@ export type DecodoRawProduct = {
   [key: string]: unknown
 }
 
-export type DecodoWrappedResult = {
-  content?: { results?: DecodoRawProduct }
+export type WrappedResult = {
+  content?: { results?: RawProduct }
 }
 
-export type DecodoResponse = {
-  results?: DecodoWrappedResult[] | DecodoRawProduct
+export type ScraperResponse = {
+  results?: WrappedResult[] | RawProduct
   errors?: unknown[]
   status_code?: number
   task_id?: string

@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config({ path: ".env.local" })
 
-import { scrapeProduct } from "./decodo"
+import { scrapeProduct } from "./scraper"
 import { initDb } from "../db/schema"
 import { saveSnapshot } from "../db/queries"
 

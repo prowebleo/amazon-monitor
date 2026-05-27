@@ -44,3 +44,5 @@ auth-wal
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
