@@ -243,45 +243,36 @@ export default function Home() {
       </div>
 
       <div className="mt-6">
-        <div className="mb-2 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-200">Comparison Table</h3>
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-200">Comparison</h3>
           <span className="text-xs text-slate-500">{products.length} product{products.length !== 1 ? "s" : ""}</span>
         </div>
-        <div className="overflow-hidden rounded-xl border border-slate-700/60 shadow-sm">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-700/60 bg-slate-800/80">
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">#</th>
-                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Product</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Price</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Lowest</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Avg</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Change</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Rating</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Reviews</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800">
-              {products.map((p, i) => (
-                <tr key={p.asin} className="hover:bg-slate-800/40 transition-colors">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
-                      <span className="font-medium text-slate-200 line-clamp-1">{p.title ?? p.asin}</span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 text-right font-semibold text-slate-100">${p.price}</td>
-                  <td className="px-4 py-3 text-right text-slate-400">${p.stats.lowest ?? "—"}</td>
-                  <td className="px-4 py-3 text-right text-slate-400">${p.stats.avg?.toFixed(0) ?? "—"}</td>
-                  <td className={`px-4 py-3 text-right font-medium ${(p.stats.change ?? 0) < 0 ? "text-emerald-400" : (p.stats.change ?? 0) > 0 ? "text-red-400" : "text-slate-500"}`}>
+        <div className="space-y-2">
+          {products.map((p, i) => {
+            const maxP = Math.max(...products.map(x => x.price ?? 0), 1)
+            const barW = p.price ? Math.round((p.price / maxP) * 100) : 0
+            return (
+              <div key={p.asin} className="rounded-lg border border-slate-700/60 bg-slate-800/40 p-3">
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
+                  <span className="text-sm text-slate-200 truncate flex-1">{p.title ?? p.asin}</span>
+                  <span className="text-sm font-bold text-slate-100">${p.price}</span>
+                </div>
+                <div className="flex items-center gap-3 text-[11px] text-slate-500">
+                  <div className="flex-1 h-2 rounded-full bg-slate-700/60 overflow-hidden">
+                    <div className="h-full rounded-full transition-all" style={{ width: `${barW}%`, backgroundColor: chartColors[i] }} />
+                  </div>
+                  <span className="w-12 text-right">Low ${p.stats.lowest ?? "—"}</span>
+                  <span className="w-12 text-right">Avg ${p.stats.avg?.toFixed(0) ?? "—"}</span>
+                  <span className={`w-14 text-right font-medium ${(p.stats.change ?? 0) < 0 ? "text-emerald-400" : (p.stats.change ?? 0) > 0 ? "text-red-400" : "text-slate-500"}`}>
                     {p.stats.change !== null ? `${p.stats.change > 0 ? "+" : ""}${p.stats.change}%` : "—"}
-                  </td>
-                  <td className="px-4 py-3 text-right text-slate-400">{p.rating ?? "—"}</td>
-                  <td className="px-4 py-3 text-right text-slate-400">{p.reviews?.toLocaleString() ?? "—"}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </span>
+                  <span className="w-10 text-right">{p.rating ?? "—"}</span>
+                  <span className="w-16 text-right">{p.reviews?.toLocaleString() ?? "—"}</span>
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
 
