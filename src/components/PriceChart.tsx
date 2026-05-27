@@ -25,15 +25,21 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
   const mergedMap = new Map<string, Record<string, any>>()
   series.forEach((s, si) => {
     s.filter((d) => d.price !== null).forEach((d) => {
-      const key = new Date(d.date).toLocaleDateString("en", {
-        month: "short",
-        day: "numeric",
-      })
-      if (!mergedMap.has(key)) mergedMap.set(key, { date: key })
+      const dt = new Date(d.date)
+      const key = dt.toISOString()
+      if (!mergedMap.has(key)) {
+        mergedMap.set(key, {
+          date: key,
+          label: dt.toLocaleDateString("en", { month: "short", day: "numeric" }) +
+            " " + dt.toLocaleTimeString("en", { hour: "2-digit", minute: "2-digit" }),
+        })
+      }
       mergedMap.get(key)![`price${si}`] = d.price
     })
   })
-  const chartData = Array.from(mergedMap.values())
+  const chartData = Array.from(mergedMap.values()).sort((a, b) =>
+    new Date(a.date).getTime() - new Date(b.date).getTime()
+  )
 
   if (chartData.length === 0) {
     return (
@@ -60,7 +66,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
                 <stop offset="100%" stopColor={colors[0]} stopOpacity={0.01} />
               </linearGradient>
             </defs>
-            <XAxis dataKey="date" hide />
+            <XAxis dataKey="label" hide />
             <YAxis hide domain={[min - padding, max + padding]} />
             <Tooltip
               formatter={(value: any) => [`$${value}`, "Price"]}
@@ -107,7 +113,7 @@ export default function PriceChart({ data, productName, colors = ["#3b82f6"], si
             ))}
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-          <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
+          <XAxis dataKey="label" tick={{ fontSize: 11, fill: "#64748b" }} axisLine={false} tickLine={false} />
           <YAxis
             domain={[min - padding, max + padding]}
             tick={{ fontSize: 11, fill: "#64748b" }}
