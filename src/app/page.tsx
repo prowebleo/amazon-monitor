@@ -237,10 +237,16 @@ export default function Home() {
         />
       </div>
 
-      <div className="mt-6 overflow-hidden rounded-xl border border-slate-700/60 shadow-sm">
+      <div className="mt-6">
+        <div className="mb-2 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-200">Comparison Table</h3>
+          <span className="text-xs text-slate-500">{products.length} product{products.length !== 1 ? "s" : ""}</span>
+        </div>
+        <div className="overflow-hidden rounded-xl border border-slate-700/60 shadow-sm">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-700/60 bg-slate-800/80">
+              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">#</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-400">Product</th>
               <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Price</th>
               <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-400">Lowest</th>
@@ -252,10 +258,10 @@ export default function Home() {
           </thead>
           <tbody className="divide-y divide-slate-800">
             {products.map((p, i) => (
-              <tr key={p.asin} className="hover:bg-slate-800/40 transition-colors">
+              <tr key={`${p.asin}-${i}`} className="hover:bg-slate-800/40 transition-colors">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full" style={{ backgroundColor: chartColors[i] }} />
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-700 text-[11px] font-bold text-slate-300 shrink-0">{i + 1}</span>
                     <span className="font-medium text-slate-200 line-clamp-1">{p.title ?? p.asin}</span>
                   </div>
                 </td>
@@ -271,6 +277,7 @@ export default function Home() {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
 
       <footer className="mt-12 border-t border-slate-800 pt-6 text-center text-xs text-slate-600">
