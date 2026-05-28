@@ -8,11 +8,16 @@ type Props = {
   filename: string
 }
 
+function escape(v: any): string {
+  const s = String(v ?? "")
+  return `"${s.replace(/"/g, '""')}"`
+}
+
 export default function ExportButton({ data, columns, filename }: Props) {
   function handleExport() {
-    const header = columns.map((c) => `"${c.label}"`).join(",")
+    const header = columns.map((c) => escape(c.label)).join(",")
     const rows = data.map((row) =>
-      columns.map((c) => `"${row[c.key] ?? ""}"`).join(",")
+      columns.map((c) => escape(row[c.key])).join(",")
     )
     const csv = [header, ...rows].join("\n")
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" })
